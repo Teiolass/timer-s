@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <time.h>
 #include <cstdlib>
+#include <libnotify/notify.h>
 
 using namespace sf;
 using namespace std;
@@ -13,6 +14,7 @@ int main(){
     RenderWindow window(VideoMode(700, 300), "Timer",Style::Resize, settings);
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(30);
+    window.setPosition(Vector2i(1000, 50));
 
     Font font;
     font.loadFromFile("Roboto.ttf");
@@ -40,6 +42,10 @@ int main(){
 
         if(secs > 3){
             clock.restart();
+            notify_init("Timer");
+            NotifyNotification* n = notify_notification_new ("Timer", "Session finished", 0);
+            notify_notification_set_timeout(n, 0);
+            notify_notification_show(n, 0);
 
             continue;
         }
